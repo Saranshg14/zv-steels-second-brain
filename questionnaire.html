@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZV Steels — Knowledge Questionnaire</title>
+  <meta name="description" content="Structured questionnaire to capture ZV Steels knowledge by role for the Second Brain." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-0: #08090c;
+      --bg-1: #0f1117;
+      --bg-2: #161a24;
+      --bg-3: #1d2233;
+      --border: #252a3a;
+      --border-light: #2e3549;
+      --accent: #4f8ef7;
+      --accent-dim: rgba(79,142,247,0.15);
+      --orange: #f97316;
+      --orange-dim: rgba(249,115,22,0.1);
+      --purple: #8b5cf6;
+      --purple-dim: rgba(139,92,246,0.12);
+      --green: #22c55e;
+      --green-dim: rgba(34,197,94,0.1);
+      --text-0: #eef0f7;
+      --text-1: #9aa0b8;
+      --text-2: #555c78;
+      --r: 12px;
+      --r-sm: 8px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-0);
+      color: var(--text-0);
+      min-height: 100vh;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(135deg, #0f1729 0%, #0f1117 60%);
+      border-bottom: 1px solid var(--border);
+      padding: 52px 40px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -80px; left: 50%;
+      transform: translateX(-50%);
+      width: 500px; height: 300px;
+      background: radial-gradient(ellipse, rgba(79,142,247,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(79,142,247,0.25);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, #eef0f7 30%, #9aa0b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      font-size: 15px;
+      color: var(--text-1);
+      max-width: 540px;
+      margin: 0 auto;
+      line-height: 1.65;
+    }
+
+    /* ── Role tabs ── */
+    .tabs-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 28px 40px 0;
+    }
+
+    .tab {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 24px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg-1);
+      color: var(--text-1);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .tab:hover { background: var(--bg-2); color: var(--text-0); }
+
+    .tab.active[data-role="employee"] { background: var(--accent-dim); border-color: rgba(79,142,247,0.4); color: var(--accent); }
+    .tab.active[data-role="manager"]  { background: var(--orange-dim); border-color: rgba(249,115,22,0.4); color: var(--orange); }
+    .tab.active[data-role="founder"]  { background: var(--purple-dim); border-color: rgba(139,92,246,0.4); color: var(--purple); }
+
+    .tab-icon { font-size: 18px; }
+
+    /* ── Main container ── */
+    .container {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 32px 24px 80px;
+    }
+
+    /* ── Panel ── */
+    .panel {
+      display: none;
+      flex-direction: column;
+      gap: 28px;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .panel.active { display: flex; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Role header ── */
+    .role-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 24px;
+      border-radius: var(--r);
+      border: 1px solid var(--border);
+      margin-top: 8px;
+    }
+
+    .panel[data-role="employee"] .role-header { background: var(--accent-dim); border-color: rgba(79,142,247,0.2); }
+    .panel[data-role="manager"]  .role-header { background: var(--orange-dim); border-color: rgba(249,115,22,0.2); }
+    .panel[data-role="founder"]  .role-header { background: var(--purple-dim); border-color: rgba(139,92,246,0.2); }
+
+    .role-avatar {
+      width: 52px; height: 52px;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px;
+      flex-shrink: 0;
+    }
+
+    .panel[data-role="employee"] .role-avatar { background: rgba(79,142,247,0.15); }
+    .panel[data-role="manager"]  .role-avatar { background: rgba(249,115,22,0.15); }
+    .panel[data-role="founder"]  .role-avatar { background: rgba(139,92,246,0.15); }
+
+    .role-header-text h2 { font-size: 18px; font-weight: 700; }
+    .role-header-text p  { font-size: 13px; color: var(--text-1); margin-top: 3px; line-height: 1.5; }
+
+    /* ── Section ── */
+    .section {
+      background: var(--bg-1);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-2);
+    }
+
+    .section-icon {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px;
+      background: var(--bg-3);
+    }
+
+    .section-title { font-size: 14px; font-weight: 600; }
+    .section-count { margin-left: auto; font-size: 11px; color: var(--text-2); font-weight: 500; }
+
+    .section-body { padding: 20px; display: flex; flex-direction: column; gap: 20px; }
+
+    /* ── Question ── */
+    .question { display: flex; flex-direction: column; gap: 8px; }
+
+    .question label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-0);
+      line-height: 1.5;
+    }
+
+    .question label span.required { color: #ef4444; margin-left: 3px; }
+    .question label span.optional { color: var(--text-2); font-size: 11px; margin-left: 6px; font-weight: 400; }
+
+    .question .hint {
+      font-size: 11px;
+      color: var(--text-2);
+      line-height: 1.5;
+    }
+
+    .question input[type="text"],
+    .question textarea,
+    .question select {
+      width: 100%;
+      background: var(--bg-3);
+      border: 1px solid var(--border-light);
+      border-radius: var(--r-sm);
+      padding: 10px 14px;
+      color: var(--text-0);
+      font-size: 13px;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      resize: vertical;
+    }
+
+    .question input[type="text"]:focus,
+    .question textarea:focus,
+    .question select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(79,142,247,0.12);
+    }
+
+    .question textarea { min-height: 90px; line-height: 1.55; }
+    .question select option { background: var(--bg-3); }
+
+    .question input::placeholder,
+    .question textarea::placeholder { color: var(--text-2); }
+
+    /* ── Radio group ── */
+    .radio-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 6px;
+      border: 1px solid var(--border-light);
+      background: var(--bg-3);
+      cursor: pointer;
+      transition: all 0.15s;
+      font-size: 13px;
+      color: var(--text-1);
+    }
+
+    .radio-option input { display: none; }
+    .radio-option:hover { border-color: var(--border-light); color: var(--text-0); }
+    .radio-option.selected { border-color: var(--accent); background: var(--accent-dim); color: var(--accent); }
+
+    /* ── Progress ── */
+    .progress-bar-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-2);
+    }
+
+    .progress-track {
+      height: 4px;
+      background: var(--bg-3);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--accent), #8b5cf6);
+      transition: width 0.4s ease;
+    }
+
+    /* ── Export button ── */
+    .export-bar {
+      position: sticky;
+      bottom: 0;
+      background: var(--bg-1);
+      border-top: 1px solid var(--border);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 0 -24px;
+      backdrop-filter: blur(12px);
+    }
+
+    .export-info { font-size: 13px; color: var(--text-1); }
+    .export-info strong { color: var(--text-0); }
+
+    .export-actions { display: flex; gap: 10px; }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 20px;
+      border-radius: var(--r-sm);
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.18s;
+    }
+
+    .btn-secondary {
+      background: var(--bg-3);
+      border: 1px solid var(--border-light);
+      color: var(--text-1);
+    }
+
+    .btn-secondary:hover { color: var(--text-0); border-color: var(--accent); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #4f8ef7, #6366f1);
+      color: white;
+    }
+
+    .btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+    /* ── Toast ── */
+    #toast {
+      position: fixed;
+      bottom: 72px; left: 50%;
+      transform: translateX(-50%) translateY(40px);
+      padding: 10px 20px;
+      border-radius: var(--r-sm);
+      font-size: 13px;
+      font-weight: 500;
+      z-index: 999;
+      opacity: 0;
+      transition: all 0.3s;
+      pointer-events: none;
+    }
+
+    #toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    #toast.success { background: var(--green-dim); color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
+    #toast.info    { background: var(--accent-dim); color: var(--accent); border: 1px solid rgba(79,142,247,0.3); }
+
+    kbd {
+      background: var(--bg-3);
+      border: 1px solid var(--border-light);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: 11px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-badge">🧠 ZV Steels Second Brain</div>
+  <h1>Knowledge Questionnaire</h1>
+  <p>Fill in the answers for your role. When done, export as a Markdown note and drop it into the <code style="color:var(--accent);font-size:13px;">data/</code> folder, then hit Re-ingest in the Brain UI.</p>
+</div>
+
+<!-- Tabs -->
+<div class="tabs-bar">
+  <button class="tab active" data-role="employee" onclick="switchTab('employee')">
+    <span class="tab-icon">👷</span> Employee
+  </button>
+  <button class="tab" data-role="manager" onclick="switchTab('manager')">
+    <span class="tab-icon">📋</span> Manager
+  </button>
+  <button class="tab" data-role="founder" onclick="switchTab('founder')">
+    <span class="tab-icon">👑</span> Founder
+  </button>
+</div>
+
+<!-- Container -->
+<div class="container">
+
+  <!-- ══════════════════ EMPLOYEE ══════════════════ -->
+  <div class="panel active" id="panel-employee" data-role="employee">
+    <div class="role-header">
+      <div class="role-avatar">👷</div>
+      <div class="role-header-text">
+        <h2>Employee Questionnaire</h2>
+        <p>Captures day-to-day operational knowledge, common customer queries, and standard procedures. Answers become <strong>public</strong> knowledge in the brain.</p>
+      </div>
+    </div>
+
+    <div class="progress-bar-wrap">
+      <div class="progress-info">
+        <span>Completion</span>
+        <span id="emp-prog-text">0 of 10 answered</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="emp-progress" style="width:0%"></div></div>
+    </div>
+
+    <!-- Section 1 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon">📦</div>
+        <span class="section-title">Products & Orders</span>
+        <span class="section-count">4 questions</span>
+      </div>
+      <div class="section-body">
+
+        <div class="question">
+          <label for="e1">What products does ZV Steels sell? <span class="required">*</span></label>
+          <div class="hint">List the main product categories (e.g., TMT bars, structural sections, plates).</div>
+          <textarea id="e1" placeholder="e.g. TMT bars in various grades, MS plates, structural angles and channels, chequered plates..." oninput="updateProgress('employee')"></textarea>
+        </div>
+
+        <div class="question">
+          <label for="e2">What is the minimum order quantity and are there exceptions? <span class="required">*</span></label>
+          <input type="text" id="e2" placeholder="e.g. Minimum 1 tonne. Exceptions with founder approval only." oninput="updateProgress('employee')" />
+        </div>
+
+        <div class="question">
+          <label for="e3">What grades or specifications do you stock? <span class="optional">optional</span></label>
+          <div class="hint">List grades, IS standards, or any certifications relevant to clients.</div>
+          <textarea id="e3" placeholder="e.g. IS 1786 Fe 500D TMT bars, IS 2062 structural steel..." oninput="updateProgress('employee')"></textarea>
+        </div>
+
+        <div class="question">
+          <label for="e4">How should a new order be placed and confirmed?</label>
+          <textarea id="e4" placeholder="e.g. Client sends PO, sales team confirms stock, raises proforma invoice, payment received before dispatch..." oninput="updateProgress('employee')"></textarea>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon">🙋</div>
+        <span class="section-title">Common Customer Questions</span>
+        <span class="section-count">3 questions</span>
+      </div>
+      <div class="section-body">
+
+        <div class="question">
+          <label for="e5">What questions do customers ask most often? <span class="required">*</span></label>
+          <div class="hint">List 5–10 real questions you get regularly from clients.</div>
+          <textarea id="e5" style="min-height:120px" placeholder="e.g.&#10;- Do you deliver to [city]?&#10;- Can I get a test certificate?&#10;- What is the current price of 10mm TMT?&#10;- How long will delivery take?" oninput="updateProgress('employee')"></textarea>
+        </div>
+
+        <div class="question">
+          <label for="e6">What is your standard reply when a client asks about delivery delay?</label>
+          <textarea id="e6" placeholder="e.g. Apologise, give a revised date, explain reason if allowed, offer partial dispatch if stock is partial..." oninput="updateProgress('employee')"></textarea>
+        </div>
+
+        <div class="question">
+          <label for="e7">What can an employee NOT do without manager or founder approval?</label>
+          <div class="hint">List anything that needs escalation before acting.</div>
+          <textarea id="e7" placeholder="e.g. Approve discounts above 2%, accept orders below MOQ, issue credit notes, approve late payment extensions..." oninput="updateProgress('employee')"></textarea>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon">⚡</div>
+        <span class="section-title">Processes & Tools</span>
+        <span class="section-count">3 questions</span>
+      </div>
+      <div class="section-body">
+
+        <div class="question">
+          <label for="e8">What tools or software does the team use daily?</label>
+          <input type="text" id="e8" placeholder="e.g. Tally, WhatsApp Business, Excel, Google Sheets, Zoho CRM..." oninput="updateProgress('employee')" />
+        </div>
+
+        <div class="question">
+          <label for="e9">What is the process when a client raises a complaint?</label>
+          <textarea id="e9" placeholder="e.g. Log the complaint, acknowledge within 24h, escalate to manager if batch-related, get batch number and MTC..." oninput="updateProgress('employee')"></textarea>
+        </div>
+
+        <div class="question">
+          <label for="e10">Is there anything that often confuses new employees? <span class="optional">optional</span></label>
+          <div class="hint">Processes, terms, or situations that are easy to get wrong.</div>
+          <textarea id="e10" placeholder="e.g. Difference between proforma and tax invoice, when to issue a debit note vs credit note..." oninput="updateProgress('employee')"></textarea>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="export-bar">
+      <div class="export-info">Role: <strong>Employee</strong> — exported as <code>access: public</code></div>
+      <div class="export-actions">
+        <button class="btn btn-secondary" onclick="clearPanel('employee')">🗑 Clear</button>
+        <button class="btn btn-primary" onclick="exportMarkdown('employee')">⬇ Export as Markdown</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ MANAGER ══════════════════ -->
+  <div class="panel" id="panel-manager" data-role="manager">
+    <div class="role-header">
+      <div class="role-avatar">📋</div>
+      <div class="role-header-text">
+        <h2>Manager Questionnaire</h2>
+        <p>Captures team management, client account handling, credit decisions, and escalation rules. Answers become <strong>manager-access</strong> knowledge.</p>
+      </div>
+    </div>
+
+    <div class="progress-bar-wrap">
+      <div class="progress-info">
+        <span>Completion</span>
+        <span id="mgr-prog-text">0 of 10 answered</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="mgr-progress" style="width:0%"></div></div>
+    </div>
+
+    <!-- Section 1 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon">🤝</div>
+        <span class="section-title">Client & Account Management</span>
+        <span class="section-count">4 questions</span>
+      </div>
+      <div class="section-body">
+
+        <div class="question">
+          <label for="m1">What is the process for onboarding a new client? <span class="required">*</span></label>
+          <div class="hint">Step-by-step from first inquiry to credit approval.</div>
+          <textarea id="m1" style="min-height:120px" placeholder="e.g.&#10;1. Receive inquiry&#10;2. Qualify the client (size, industry, location)&#10;3. Send quotation&#10;4. First order on upfront terms&#10;5. Credit check after 3 successful orders..." oninput="updateProgress('manager')"></textarea>
+        </div>
+
+        <div class="question">
+          <label for="m2">What is the starting credit limit for new accounts and how is it reviewed? <span class="required">*</span></label>
+          <input type="text" id="m2" placeholder="e.g. Rs. 5 lakhs for first 6 months. Reviewed after 6 months of on-time payments." oninput="updateProgress('manager')" />
+        </div>
+
+        <div class="question">
+          <label for="m3">When should a manager escalate to the founder?</label>
+          <div class="hint">List specific triggers — order size, client type, dispute level, etc.</div>
+          <textarea id="m3" placeholder="e.g. Orders above 50 tonnes from new clients, disputes above Rs. 2L, any request for credit note above Rs. 50k, accounts overdue 30+ days..." oninput="updateProgress('manager')"></textarea>
+        </div>
+
+        <div class="question">
+          <label for="m4">How should underperforming or dormant accounts be handled? <span class="optional">optional</span></label>
+          <textarea id="m4" placeholder="e.g. Flag accounts with no order in 60 days, call the client before they go to a competitor, offer a check-in meeting..." oninput="updateProgress('manager')"></textarea>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon">💰</div>
+        <span class="section-title">Pricing Approvals & Discounts</span>
+        <span class="section-count">3 questions</span>
+      </div>
+      <div class="section-body">
+
+        <div class="question">
+          <label for="m5">What discount levels can a manager approve without founder involvement? <span class="required">*</span></label>
+          <input type="text" id="m5" placeholder="e.g. Manager can approve up to 3% on orders above 10 tonnes for repeat clients." oninput="updateProgress('manager')" />
+        </div>
+
+        <div class="question">
+          <label for="m6">How are rush order surcharges communicated and waived (if ever)?</label>
+          <textarea id="m6" placeholder="e.g. Sales informs client upfront. 15% surcharge is policy. Waivers need founder approval and happen only for anchor accounts." oninput="updateProgress('manager')"></textarea>
+        </div>
+
+        <div class="question">
+          <label for="m7">What happens when a client disputes a price after a quote has been accepted?</label>
+          <textarea id="m7" placeholder="e.g. Quote is binding for 7 days. After that, re-quote at current prices. If within 7 days, honour the quote." oninput="updateProgress('manager')"></textarea>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon">👥</div>
+        <span class="section-title">Team & Operations</span>
+        <span class="section-count">3 questions</span>
+      </div>
+      <div class="section-body">
+
+        <div class="question">
+          <label for="m8">What are the key KPIs you track for the sales team?</label>
+          <input type="text" id="m8" placeholder="e.g. Monthly revenue, new accounts opened, overdue collections, quote-to-order conversion rate..." oninput="updateProgress('manager')" />
+        </div>
+
+        <div class="question">
+          <label for="m9">How are team targets set and communicated? <span class="optional">optional</span></label>
+          <textarea id="m9" placeholder="e.g. Monthly targets set at the start of the month. Team review every Friday. Incentive paid on collection, not just order booking." oninput="updateProgress('manager')"></textarea>
+        </div>
+
+        <div class="question">
+          <label for="m10">What decisions should a manager never make alone? <span class="required">*</span></label>
+          <textarea id="m10" placeholder="e.g. Terminating a client account, issuing a credit note above Rs. 1L, committing to custom stock not in our range..." oninput="updateProgress('manager')"></textarea>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="export-bar">
+      <div class="export-info">Role: <strong>Manager</strong> — exported as <code>access: managers</code></div>
+      <div class="export-actions">
+        <button class="btn btn-secondary" onclick="clearPanel('manager')">🗑 Clear</button>
+        <button class="btn btn-primary" onclick="exportMarkdown('manager')">⬇ Export as Markdown</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ FOUNDER ══════════════════ -->
+  <div class="panel" id="panel-founder" data-role="founder">
+    <div class="role-header">
+      <div class="role-avatar">👑</div>
+      <div class="role-header-text">
+        <h2>Founder Questionnaire</h2>
+        <p>Captures strategic thinking, financial thresholds, supplier relationships, and long-term vision. Answers become <strong>founder-only</strong> knowledge.</p>
+      </div>
+    </div>
+
+    <div class="progress-bar-wrap">
+      <div class="progress-info">
+        <span>Completion</span>
+        <span id="fnd-prog-text">0 of 12 answered</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="fnd-progress" style="width:0%"></div></div>
+    </div>
+
+    <!-- Section 1 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon">📈</div>
+        <span class="section-title">Strategy & Growth</span>
+        <span class="section-count">4 questions</span>
+      </div>
+      <div class="section-body">
+
+        <div class="question">
+          <label for="f1">What is the company's growth target for this financial year? <span class="required">*</span></label>
+          <input type="text" id="f1" placeholder="e.g. 40% revenue growth, add 3 anchor accounts above Rs. 50L annual spend, expand to Pune and Coimbatore." oninput="updateProgress('founder')" />
+        </div>
+
+        <div class="question">
+          <label for="f2">Which markets or cities are you targeting for expansion?</label>
+          <textarea id="f2" placeholder="e.g. Currently strong in Chennai. Targeting Pune and Coimbatore in FY27. Bangalore is next after that." oninput="updateProgress('founder')"></textarea>
+        </div>
+
+        <div class="question">
+          <label for="f3">What types of clients do you NOT want to serve? <span class="required">*</span></label>
+          <div class="hint">This helps the brain advise on walk-away situations.</div>
+          <textarea id="f3" placeholder="e.g. Clients who only compete on price, clients with 3 or more late payments, retail customers (we are B2B only), clients requesting off-spec material..." oninput="updateProgress('founder')"></textarea>
+        </div>
+
+        <div class="question">
+          <label for="f4">What is your 3-year vision for ZV Steels? <span class="optional">optional</span></label>
+          <textarea id="f4" placeholder="e.g. Become the most reliable mid-size steel distributor in South India. Own a warehouse in 3 cities. Build a repeat client base that generates 70% of revenue..." oninput="updateProgress('founder')"></textarea>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon">💵</div>
+        <span class="section-title">Financials & Margins</span>
+        <span class="section-count">4 questions</span>
+      </div>
+      <div class="section-body">
+
+        <div class="question">
+          <label for="f5">What is the minimum gross margin you will accept on any order? <span class="required">*</span></label>
+          <input type="text" id="f5" placeholder="e.g. 12% minimum. Can go to 10% for strategic clients on orders above 50 tonnes." oninput="updateProgress('founder')" />
+        </div>
+
+        <div class="question">
+          <label for="f6">What are your current cost benchmarks per product category?</label>
+          <div class="hint">Keep these confidential — they will be founder-only in the brain.</div>
+          <textarea id="f6" placeholder="e.g.&#10;- TMT bars: cost + 14% = standard sell price&#10;- Structural sections: cost + 16%&#10;- Plates & sheets: cost + 13%" oninput="updateProgress('founder')"></textarea>
+        </div>
+
+        <div class="question">
+          <label for="f7">What is your blended margin target for the year?</label>
+          <input type="text" id="f7" placeholder="e.g. Maintain blended gross margin above 13.5% across all product lines." oninput="updateProgress('founder')" />
+        </div>
+
+        <div class="question">
+          <label for="f8">What financial red flags should trigger a founder review immediately? <span class="required">*</span></label>
+          <textarea id="f8" placeholder="e.g. Any single order pushing margin below 10%, any client with outstanding above Rs. 10L past 30 days, any month where collections fall below 80% of invoicing..." oninput="updateProgress('founder')"></textarea>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon">🔗</div>
+        <span class="section-title">Suppliers & Operations</span>
+        <span class="section-count">4 questions</span>
+      </div>
+      <div class="section-body">
+
+        <div class="question">
+          <label for="f9">Who are your primary suppliers and what are the terms? <span class="optional">optional</span></label>
+          <textarea id="f9" placeholder="e.g. Primary: [Mill Name] — 60-day credit, 5% volume rebate above 500T/quarter. Backup: [Mill Name] — 30-day credit, spot pricing." oninput="updateProgress('founder')"></textarea>
+        </div>
+
+        <div class="question">
+          <label for="f10">What is your buffer stock policy? <span class="required">*</span></label>
+          <input type="text" id="f10" placeholder="e.g. Minimum 3-week buffer on top 5 SKUs. Reorder when buffer drops below 2 weeks." oninput="updateProgress('founder')" />
+        </div>
+
+        <div class="question">
+          <label for="f11">What major decisions have you made recently that the team should know your reasoning for? <span class="optional">optional</span></label>
+          <div class="hint">Pricing changes, new policies, market exits, new hires, etc.</div>
+          <textarea id="f11" style="min-height:120px" placeholder="e.g. We stopped supplying to small retail shops because the collection risk was too high relative to order size. We moved to 100% B2B..." oninput="updateProgress('founder')"></textarea>
+        </div>
+
+        <div class="question">
+          <label for="f12">What is something you wish your team understood better about how you make decisions? <span class="optional">optional</span></label>
+          <textarea id="f12" placeholder="e.g. I always prioritise cash flow over revenue. A large order that won't pay for 90 days is worse than a smaller order that pays in 30..." oninput="updateProgress('founder')"></textarea>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="export-bar">
+      <div class="export-info">Role: <strong>Founder</strong> — exported as <code>access: founder-only</code></div>
+      <div class="export-actions">
+        <button class="btn btn-secondary" onclick="clearPanel('founder')">🗑 Clear</button>
+        <button class="btn btn-primary" onclick="exportMarkdown('founder')">⬇ Export as Markdown</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script>
+// ── Tab switching ──
+function switchTab(role) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelector(`.tab[data-role="${role}"]`).classList.add('active');
+  document.getElementById('panel-' + role).classList.add('active');
+}
+
+// ── Progress tracking ──
+const TOTALS = { employee: 10, manager: 10, founder: 12 };
+const PREFIXES = { employee: 'e', manager: 'm', founder: 'f' };
+const IDS_MAP = {
+  employee: ['e1','e2','e3','e4','e5','e6','e7','e8','e9','e10'],
+  manager:  ['m1','m2','m3','m4','m5','m6','m7','m8','m9','m10'],
+  founder:  ['f1','f2','f3','f4','f5','f6','f7','f8','f9','f10','f11','f12'],
+};
+const PROG_IDS = { employee: 'emp', manager: 'mgr', founder: 'fnd' };
+
+function updateProgress(role) {
+  const ids = IDS_MAP[role];
+  const filled = ids.filter(id => {
+    const el = document.getElementById(id);
+    return el && el.value.trim().length > 0;
+  }).length;
+  const pct = Math.round((filled / TOTALS[role]) * 100);
+  const pre = PROG_IDS[role];
+  document.getElementById(pre + '-progress').style.width = pct + '%';
+  document.getElementById(pre + '-prog-text').textContent = `${filled} of ${TOTALS[role]} answered`;
+}
+
+// ── Radio groups ──
+document.querySelectorAll('.radio-option').forEach(opt => {
+  opt.addEventListener('click', () => {
+    const name = opt.querySelector('input').name;
+    document.querySelectorAll(`input[name="${name}"]`).forEach(i => {
+      i.closest('.radio-option').classList.remove('selected');
+    });
+    opt.classList.add('selected');
+    opt.querySelector('input').checked = true;
+  });
+});
+
+// ── Export ──
+const Q_LABELS = {
+  employee: {
+    e1:  'What products does ZV Steels sell?',
+    e2:  'Minimum order quantity and exceptions',
+    e3:  'Grades and specifications stocked',
+    e4:  'Process to place and confirm a new order',
+    e5:  'Most common customer questions',
+    e6:  'Standard reply for delivery delay',
+    e7:  'Actions requiring manager/founder approval',
+    e8:  'Tools and software used daily',
+    e9:  'Complaint handling process',
+    e10: 'Things that confuse new employees',
+  },
+  manager: {
+    m1:  'New client onboarding process',
+    m2:  'Starting credit limit and review policy',
+    m3:  'When to escalate to founder',
+    m4:  'Handling dormant accounts',
+    m5:  'Discount levels a manager can approve',
+    m6:  'Rush order surcharge communication and waivers',
+    m7:  'Client disputes a price after quote accepted',
+    m8:  'Key KPIs tracked for sales team',
+    m9:  'How team targets are set',
+    m10: 'Decisions a manager must not make alone',
+  },
+  founder: {
+    f1:  'Growth target for this financial year',
+    f2:  'Markets and cities targeted for expansion',
+    f3:  'Types of clients we do not want to serve',
+    f4:  '3-year vision for ZV Steels',
+    f5:  'Minimum gross margin accepted',
+    f6:  'Cost benchmarks per product category',
+    f7:  'Blended margin target for the year',
+    f8:  'Financial red flags triggering founder review',
+    f9:  'Primary suppliers and terms',
+    f10: 'Buffer stock policy',
+    f11: 'Recent major decisions and reasoning',
+    f12: 'What the team should understand about founder decision-making',
+  },
+};
+
+const ACCESS_MAP = {
+  employee: 'public',
+  manager: 'managers',
+  founder: 'founder-only',
+};
+
+const DEPT_MAP = {
+  employee: 'Operations',
+  manager: 'Management',
+  founder: 'Founder',
+};
+
+function exportMarkdown(role) {
+  const ids = IDS_MAP[role];
+  const labels = Q_LABELS[role];
+  const access = ACCESS_MAP[role];
+  const dept = DEPT_MAP[role];
+  const today = new Date().toISOString().split('T')[0];
+
+  let hasAny = ids.some(id => {
+    const el = document.getElementById(id);
+    return el && el.value.trim().length > 0;
+  });
+
+  if (!hasAny) {
+    showToast('Fill in at least one answer before exporting.', 'info');
+    return;
+  }
+
+  let md = `---\ncompany: ZV-Steels\ndepartment: ${dept}\naccess: ${access}\ntype: questionnaire\ndate: ${today}\n---\n\n`;
+  md += `# ZV Steels ${role.charAt(0).toUpperCase() + role.slice(1)} Knowledge — ${today}\n\n`;
+
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el || !el.value.trim()) return;
+    const heading = labels[id];
+    const val = el.value.trim();
+    md += `## ${heading}\n${val}\n\n`;
+  });
+
+  // Download
+  const blob = new Blob([md], { type: 'text/markdown' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `zv-steels-${role}-knowledge-${today}.md`;
+  a.click();
+  URL.revokeObjectURL(url);
+
+  showToast(`Exported! Drop the file into data/${role === 'founder' ? 'founder-only/' : role === 'manager' ? 'managers/' : ''}`, 'success');
+}
+
+function clearPanel(role) {
+  IDS_MAP[role].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  updateProgress(role);
+  showToast('Cleared.', 'info');
+}
+
+// ── Toast ──
+function showToast(msg, type = 'info') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `show ${type}`;
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => { t.className = type; }, 3500);
+}
+</script>
+</body>
+</html>
